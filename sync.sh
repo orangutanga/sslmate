@@ -17,7 +17,7 @@ if [ -n "$SSLMATE_API_KEY_FILE" ]; then
   fi
 fi
 
-if [ "x$SSLMATE_API_KEY" == "x" ]; then
+if [[ -z "$SSLMATE_API_KEY" ]]; then
    echo "Missing sslmate api key from environment. Variable name must be SSLMATE_API_KEY"
    exit 1
 fi
@@ -63,8 +63,36 @@ fi
 
 # Sync
 while true; do
-    sslmate download --all
-    sleep 60
+  # Download
+  echo \
+  "$(date): Attemping to download..."
+  if sslmate download --all; then
+    echo "$(date) Downloaded new certificates! Touch NEW in 'keys' directory"
+    touch /etc/sslmate/certs/NEW
+  fi
+
+  # Sleep
+  for expiration in $(sslmate list -z --columns=expiration); do
+    timeleft=$(( expiration - $(date +"%s") ))
+    echo -n "timeleft: $timeleft "
+    if (( timeleft <= 0 )); then
+      r=$((RANDOM%4))
+      if [[ -v $sleeptime ]]; then
+        sleeptime=$(( sleeptime > r ? r : sleeptime ))
+      else
+        sleeptime=$r
+      fi
+    else
+      r=$((timeleft*9/10))
+      if [[ -v $sleeptime ]]; then
+        sleeptime=$(( sleeptime > r ? r : sleeptime ))
+      else
+        sleeptime=$r
+      fi
+    fi
+  done
+  echo "- sleeping for $sleeptime seconds"
+  sleep $sleeptime
 done
 
 exit 0
