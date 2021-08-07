@@ -9,10 +9,25 @@ if [ ! -x /usr/bin/sslmate ]; then
     exit 1
 fi
 
-if [ "x$SSLMATE_API_KEY" == "x" ]; then
-   echo "Missing sslmate api key from environment. Variable name must be SSLMATE_API_KEY"
+if [ "x$SSLMATE_API_KEY_FILE" == "x" ]; then
+
+  if [ "x$SSLMATE_API_KEY" == "x" ]; then
+     echo "Missing sslmate api key from environment. Variable name must be SSLMATE_API_KEY or SSLMATE_API_KEY_FILE"
+     exit 1
+  fi
+
+else
+
+  if [ -f "$SSLMATE_API_KEY_FILE" }
+    SSLMATE_API_KEY=$(cat "$SSLMATE_API_KEY_FILE")
+  else
+   echo "Missing sslmate api key secret file: $SSLMATE_API_KEY_FILE"
    exit 1
+  fi
+
 fi
+
+
 
 if [ ! -d /etc/sslmate/keys ]; then
     mkdir -p /etc/sslmate/keys
@@ -56,7 +71,7 @@ fi
 # Sync
 while true; do
     sslmate download --all
-    sleep 60
+    sleep 2590000
 done
 
 exit 0
