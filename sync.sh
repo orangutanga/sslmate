@@ -9,6 +9,14 @@ if [ ! -x /usr/bin/sslmate ]; then
     exit 1
 fi
 
+if [ -n "$SSLMATE_API_KEY_FILE" ]; then
+  echo "Attemping to use sslmate api key secret"
+  if [ -f "$SSLMATE_API_KEY_FILE" ]; then
+    echo "Secret found. Setting as SSLMATE_API_KEY"
+    SSLMATE_API_KEY="$(< "$SSLMATE_API_KEY_FILE")"
+  fi
+fi
+
 if [ "x$SSLMATE_API_KEY" == "x" ]; then
    echo "Missing sslmate api key from environment. Variable name must be SSLMATE_API_KEY"
    exit 1
