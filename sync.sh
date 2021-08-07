@@ -72,16 +72,19 @@ while true; do
   fi
 
   # Sleep
+  modulus=4
   for expiration in $(sslmate list -z --columns=expiration); do
     timeleft=$(( expiration - $(date +"%s") ))
     echo -n "timeleft: $timeleft "
     if (( timeleft <= 0 )); then
-      r=$((RANDOM%4))
+      r=$((RANDOM%modulus))
       if [[ -v $sleeptime ]]; then
         sleeptime=$(( sleeptime > r ? r : sleeptime ))
       else
         sleeptime=$r
       fi
+      modulus=$(( modulus*2 ))
+      modulus=$(( modulus > 32768 ? 256 : modulus ))
     else
       r=$((timeleft*9/10))
       if [[ -v $sleeptime ]]; then
@@ -89,6 +92,7 @@ while true; do
       else
         sleeptime=$r
       fi
+      modulus=4
     fi
   done
   echo "- sleeping for $sleeptime seconds"
