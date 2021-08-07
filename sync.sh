@@ -18,11 +18,11 @@ if [ "x$SSLMATE_API_KEY_FILE" == "x" ]; then
 
 else
 
-  if [ -f "$SSLMATE_API_KEY_FILE" }
+  if [ -f "$SSLMATE_API_KEY_FILE" } ]
     SSLMATE_API_KEY=$(cat "$SSLMATE_API_KEY_FILE")
   else
-   echo "Missing sslmate api key secret file: $SSLMATE_API_KEY_FILE"
-   exit 1
+    echo "Missing sslmate api key secret file: $SSLMATE_API_KEY_FILE"
+    exit 1
   fi
 
 fi
