@@ -30,6 +30,14 @@ if [ ! -d /etc/sslmate/certs ]; then
     mkdir -p /etc/sslmate/certs
 fi
 
+# COPY secret keys to keys dir
+# NOTE: /etc/sslmate needs to be a named volume so key is not stored in image
+for FILE in /run/secrets/DOMAIN_*; do
+  FNAME=${FILE#*DOMAIN_}
+  FNAME=${FNAME,,}
+  cp "${FILE}" "/etc/sslmate/keys/${FNAME}" 
+done
+
 if [ ! -f /etc/sslmate.conf ]; then
 cat > /etc/sslmate.conf <<EOF
 api_key ${SSLMATE_API_KEY}
