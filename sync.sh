@@ -32,8 +32,8 @@ fi
 
 # COPY secret keys to keys dir
 # NOTE: /etc/sslmate needs to be a named volume so key is not stored in image
-for FILE in /run/secrets/DOMAIN_*; do
-  FNAME=${FILE#*DOMAIN_}
+for FILE in /run/secrets/*DOMAIN_*; do
+  FNAME=${FILE##*_}
   FNAME=${FNAME,,}
   cp "${FILE}" "/etc/sslmate/keys/${FNAME}" 
 done
