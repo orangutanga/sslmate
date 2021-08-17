@@ -77,6 +77,9 @@ while true; do
   if sslmate download --all; then
     echo "$(date) Downloaded new certificates! Touch NEW in 'keys' directory"
     touch /etc/sslmate/certs/NEW
+  else
+    echo " -- error "
+    exit 1
   fi
 
   # Sleep
