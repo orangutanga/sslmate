@@ -79,8 +79,8 @@ while true; do
   else
     if [[ "$?" != "10" ]]; then
       echo " -- sslmate error"
-      sleep 36000
-      exit
+      sleep 360000 # 10 hours
+      continue
     fi
   fi
 
