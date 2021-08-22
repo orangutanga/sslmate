@@ -72,14 +72,14 @@ fi
 # Sync
 while true; do
   # Download
-  echo \
-  "$(date): Attemping to download..."
+  echo " -- $(date)"
   if sslmate download --all; then
-    echo "$(date) Downloaded new certificates! Touch NEW in 'keys' directory"
+    echo " -- download"
     touch /etc/sslmate/certs/NEW
   else
     if [[ "$?" != "10" ]]; then
-      echo "sslmate error"
+      echo " -- sslmate error"
+      sleep 36000
       exit
     fi
   fi
