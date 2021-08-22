@@ -79,8 +79,9 @@ while true; do
     touch /etc/sslmate/certs/NEW
   else
     if [[ "$?" != "10" ]]; then
-    echo "sslmate error"
-    exit
+      echo "sslmate error"
+      exit
+    fi
   fi
 
   # Sleep
