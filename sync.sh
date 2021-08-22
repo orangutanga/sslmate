@@ -108,8 +108,13 @@ while true; do
       modulus=4
     fi
   done
-  echo "- sleeping for $sleeptime seconds"
-  sleep $sleeptime
+  if [[ -z $sleeptime ]]; then
+    echo "sleeptime error"
+    exit 1
+  else
+    echo "- sleeping for $sleeptime seconds"
+    sleep $sleeptime
+  fi
 done
 
 exit 0
