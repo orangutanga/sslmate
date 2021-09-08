@@ -37,8 +37,9 @@ for FILE in /run/secrets/*domain_*; do
     echo "Cannot find secrets";
     exit 1;
   fi
-  FNAME=${FILE##*_}
-  FNAME=${FNAME,,}
+  FNAME=${FILE#*domain_}
+  FNAME=${FNAME%_key}
+  echo "Secret file $FILE found. Copying to /etc/sslmate/keys/${FNAME}"
   cp "${FILE}" "/etc/sslmate/keys/${FNAME}" 
 done
 
