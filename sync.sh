@@ -22,31 +22,11 @@ if [[ -z "$SSLMATE_API_KEY" ]]; then
    exit 1
 fi
 
-if [ ! -d /etc/sslmate/keys ]; then
-    mkdir -p /etc/sslmate/keys
-fi
-
-if [ ! -d /etc/sslmate/certs ]; then
-    mkdir -p /etc/sslmate/certs
-fi
-
-# COPY secret keys to keys dir
-# NOTE: /etc/sslmate needs to be a named volume so key is not stored in image
-for FILE in /run/secrets/*domain_*; do
-  if [[ ! -f ${FILE} ]]; then
-    echo "Cannot find secrets";
-    exit 1;
-  fi
-  FNAME=${FILE##*_}
-  echo "Secret file $FILE found. Copying to /etc/sslmate/keys/${FNAME}"
-  cp "${FILE}" "/etc/sslmate/keys/${FNAME}" 
-done
-
 if [ ! -f /etc/sslmate.conf ]; then
 cat > /etc/sslmate.conf <<EOF
 api_key ${SSLMATE_API_KEY}
-key_directory /etc/sslmate/keys
-cert_directory /etc/sslmate/certs
+key_directory /etc/sslmate/
+cert_directory /etc/sslmate/
 cert_format.chained yes
 cert_format.combined yes
 cert_format.root yes
